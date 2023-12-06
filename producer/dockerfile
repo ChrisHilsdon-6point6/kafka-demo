@@ -1,0 +1,12 @@
+FROM python:3.11-alpine
+
+RUN apk add --no-cache build-base \
+  && apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/community librdkafka-dev
+
+WORKDIR /app
+
+COPY . /app
+
+RUN pip install -r requirements.txt -t /app
+
+ENTRYPOINT ["python", "producer.py"]

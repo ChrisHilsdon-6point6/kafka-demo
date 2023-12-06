@@ -5,7 +5,7 @@ import json
 
 def setupKafka():
     conf = {
-        'bootstrap.servers': 'localhost:9092',
+        'bootstrap.servers': 'broker:9092',
         'client.id': socket.gethostname(),
         'security.protocol': 'PLAINTEXT'
     }
@@ -28,4 +28,4 @@ def sendMessage(message):
 if __name__ == '__main__':
     setupKafka()
 
-    run("localhost", 8080)
+    run("0.0.0.0", 8080)

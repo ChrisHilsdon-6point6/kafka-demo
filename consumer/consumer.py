@@ -1,7 +1,7 @@
 from confluent_kafka import Consumer
 
 conf = {
-    'bootstrap.servers': 'localhost:9092',
+    'bootstrap.servers': 'broker:9092',
     'group.id': 'foo',
     'auto.offset.reset': 'smallest'
 }
@@ -37,5 +37,5 @@ def shutdown():
 def msg_process(msg):
     print(msg.value())
 
-
+print('starting basic_consume_loop()')
 basic_consume_loop(consumer, topics=["messages"])

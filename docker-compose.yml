@@ -1,5 +1,19 @@
 version: '3'
 services:
+  producer:
+    container_name: producer
+    image: ghcr.io/chris-hilsdon/kafka-demo/producer
+    ports:
+      - "8080:8080"
+    build:
+      context: ./producer
+
+  consumer:
+    container_name: consumer
+    image: ghcr.io/chris-hilsdon/kafka-demo/consumer
+    build:
+      context: ./consumer
+
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper
@@ -7,14 +21,10 @@ services:
       ZOOKEEPER_SERVER_ID: 1
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - "22181:2181"
 
   broker:
     image: confluentinc/cp-kafka:latest
     container_name: broker
-    ports:
-      - "9092:9092"
     depends_on:
       - zookeeper
     environment:
@@ -22,7 +32,7 @@ services:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT_HOST://broker:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_HOST
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
